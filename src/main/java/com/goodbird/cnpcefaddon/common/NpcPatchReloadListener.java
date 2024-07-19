@@ -38,7 +38,7 @@ import java.util.function.Supplier;
 public class NpcPatchReloadListener extends SimpleJsonResourceReloadListener {
     private static final Gson GSON = (new GsonBuilder()).create();
 
-    private static final NpcBranchPatchProvider branchPatchProvider = new NpcBranchPatchProvider();
+    public static final NpcBranchPatchProvider branchPatchProvider = new NpcBranchPatchProvider();
     public static final Set<ResourceLocation> AVAILABLE_MODELS = new HashSet<>();
 
     public NpcPatchReloadListener() {
