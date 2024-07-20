@@ -52,6 +52,7 @@ public class AdvNpcPatchReloader  extends SimpleJsonResourceReloadListener {
             }
             NpcPatchReloadListener.branchPatchProvider.addProvider(entry.getKey(), deserializeMobPatchProvider(tag, false));
             NpcPatchReloadListener.AVAILABLE_MODELS.add(entry.getKey());
+            NpcPatchReloadListener.TAGMAP.put(entry.getKey(), MobPatchReloadListener.filterClientData(tag));
             EntityPatchProvider.putCustomEntityPatch(CustomEntities.entityCustomNpc, entity -> ()->NpcPatchReloadListener.branchPatchProvider.get(entity));
             if (EpicFightMod.isPhysicalClient())
                 RenderStorage.registerRenderer(entry.getKey(), tag.contains("preset") ? tag.getString("preset") : tag.getString("renderer"));
