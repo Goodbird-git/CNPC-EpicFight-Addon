@@ -8,7 +8,7 @@ import yesman.epicfight.model.armature.HumanoidArmature;
 import yesman.epicfight.world.capabilities.entitypatch.EntityPatch;
 
 public class NpcHumanoidPatchProvider extends MobPatchReloadListener.CustomHumanoidMobPatchProvider implements INpcPatchProvider {
-    public HumanoidArmature armature;
+    public Armature armature;
 
     public EntityPatch<?> get(Entity entity) {
         return new NpcHumanoidPatch(this.faction, this);
@@ -16,6 +16,6 @@ public class NpcHumanoidPatchProvider extends MobPatchReloadListener.CustomHuman
 
     @Override
     public void setArmature(Armature armature) {
-        this.armature = (HumanoidArmature) armature;
+        this.armature = armature;
     }
 }

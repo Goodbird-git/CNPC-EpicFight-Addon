@@ -1,6 +1,7 @@
 package com.goodbird.cnpcefaddon.mixin.impl;
 
 import com.mojang.datafixers.util.Pair;
+import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
@@ -24,7 +25,7 @@ public interface ICustomMobPatchProvider {
     @Accessor(remap = false)
     void setStunAnimations(Map<StunType, StaticAnimation> map);
     @Accessor(remap = false)
-    void setAttributeValues(Map<Attribute, Double> map);
+    void setAttributeValues(Object2DoubleMap<Attribute> map);
     @Accessor(remap = false)
     void setFaction(Faction faction);
     @Accessor(remap = false)

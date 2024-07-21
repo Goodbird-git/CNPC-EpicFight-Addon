@@ -1,7 +1,6 @@
 package com.goodbird.cnpcefaddon.common.network;
 
 import com.goodbird.cnpcefaddon.common.NpcPatchReloadListener;
-import com.nameless.indestructible.data.AdvancedMobpatchReloader;
 import java.util.function.Supplier;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
