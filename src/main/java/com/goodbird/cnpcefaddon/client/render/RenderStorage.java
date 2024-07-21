@@ -20,7 +20,7 @@ public class RenderStorage {
         if ("player".equals(renderer)) {
             renderersMap.put(resourceLocation, renderEngine.getBasicHumanoidRenderer());
         } else {
-            EntityType<?> presetEntityType = ForgeRegistries.ENTITY_TYPES.getValue(new ResourceLocation(renderer));
+            EntityType<?> presetEntityType = ForgeRegistries.ENTITIES.getValue(new ResourceLocation(renderer));
             if (renderEngine.getEntityRendererProvider().containsKey(presetEntityType)) {
                 renderersMap.put(resourceLocation, renderEngine.getEntityRendererProvider().get(presetEntityType).get());
             } else {

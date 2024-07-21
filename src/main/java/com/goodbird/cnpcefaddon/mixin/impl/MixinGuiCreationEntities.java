@@ -3,7 +3,6 @@ package com.goodbird.cnpcefaddon.mixin.impl;
 import com.goodbird.cnpcefaddon.client.gui.GuiStringSelection;
 import com.goodbird.cnpcefaddon.common.NpcPatchReloadListener;
 import com.goodbird.cnpcefaddon.mixin.IDataDisplay;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import noppes.npcs.client.gui.model.GuiCreationEntities;
@@ -44,9 +43,9 @@ public class MixinGuiCreationEntities extends GuiCreationScreenInterface {
     }
 
     @Override
-    public void drawNpc(GuiGraphics graphics, LivingEntity entity, int x, int y, float zoomed, int rotation) {
+    public void drawNpc(LivingEntity entity, int x, int y, float zoomed, int rotation) {
         if(wrapper.subgui==null) {
-            super.drawNpc(graphics, entity, x, y, zoomed, rotation);
+            super.drawNpc(entity, x, y, zoomed, rotation);
         }
     }
 }

@@ -1,9 +1,7 @@
 package com.goodbird.cnpcefaddon;
 
-import com.goodbird.cnpcefaddon.common.AdvNpcPatchReloader;
 import com.goodbird.cnpcefaddon.common.NpcPatchReloadListener;
 import com.goodbird.cnpcefaddon.common.network.SPDatapackSync;
-import com.nameless.indestructible.data.AdvancedMobpatchReloader;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.common.MinecraftForge;
@@ -36,9 +34,6 @@ public class CNPCEpicFightAddon {
 
     private void reloadListenerEvent(AddReloadListenerEvent event) {
         event.addListener(new NpcPatchReloadListener());
-        if(ModList.get().isLoaded("indestructible")){
-            event.addListener(new AdvNpcPatchReloader());
-        }
     }
 
     private void onDatapackSync(OnDatapackSyncEvent event) {

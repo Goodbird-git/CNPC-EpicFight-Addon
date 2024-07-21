@@ -5,7 +5,7 @@ import com.goodbird.cnpcefaddon.mixin.IMixinCapabilityDispatcher;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import noppes.npcs.entity.EntityNPCInterface;
 import noppes.npcs.entity.data.DataDisplay;
 import org.spongepowered.asm.mixin.Mixin;
@@ -63,7 +63,7 @@ public class MixinDataDisplay implements IDataDisplay {
         ICapabilityProvider[] caps = ((IMixinCapabilityDispatcher)(Object)((MixinCapabilityProvider)npc).invokeGetCapabilities()).getCaps();
         EntityPatchProvider newProvider = new EntityPatchProvider(npc);
         ((EntityPatch)newProvider.get()).onConstructed(npc);
-        ((EntityPatch)newProvider.get()).onJoinWorld(npc, new EntityJoinLevelEvent(npc,npc.level()));
+        ((EntityPatch)newProvider.get()).onJoinWorld(npc, new EntityJoinWorldEvent(npc,npc.level));
         if(newProvider.hasCapability()){
             boolean hasFoundAny = false;
             for(int i = 0; i<caps.length; i++){

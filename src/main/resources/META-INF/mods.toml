@@ -8,7 +8,7 @@
 modLoader="javafml" #mandatory
 
 # A version range to match for said mod loader - for regular FML @Mod it will be the forge version
-loaderVersion="[47,)" #mandatory (24 is current forge version)
+loaderVersion = "[38,)" #mandatory (24 is current forge version)
 
 # A URL to refer people to when problems occur with this mod
 issueTrackerURL="http://my.issue.tracker/" #optional
@@ -32,12 +32,12 @@ A compatibility bridge between CustomNPCs and EpicFight
 [[dependencies.cnpcefaddon]] #optional
     modId="forge" #mandatory
     mandatory=true #mandatory
-    versionRange="[47,)" #mandatory
+    loaderVersion = "[38,)" #mandatory
     ordering="NONE"
     side="BOTH"
 [[dependencies.cnpcefaddon]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.20.1,1.21)"
+    versionRange = "[1.18.0,1.18.2]"
     ordering="NONE"
     side="BOTH"

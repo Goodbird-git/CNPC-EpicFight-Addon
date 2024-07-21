@@ -1,7 +1,6 @@
 package com.goodbird.cnpcefaddon.client.gui;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import noppes.npcs.client.gui.util.GuiNPCInterface;
 import noppes.npcs.shared.client.gui.components.GuiButtonNop;
@@ -37,7 +36,7 @@ public class GuiStringSelection extends GuiNPCInterface {
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+    public void render(PoseStack graphics, int mouseX, int mouseY, float partialTicks) {
         this.slot.render(graphics, mouseX, mouseY, partialTicks);
         super.render(graphics, mouseX, mouseY, partialTicks);
     }
