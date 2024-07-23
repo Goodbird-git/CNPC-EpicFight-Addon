@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "cnpcefaddon.refmap.json",
   "mixins": [
+    "MixinAttributeMap",
     "ICustomHumanoidMobPatchProvider",
     "ICustomMobPatchProvider",
     "MixinCapabilityDispatcher2",

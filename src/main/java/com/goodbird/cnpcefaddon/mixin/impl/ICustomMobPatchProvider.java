@@ -2,12 +2,14 @@ package com.goodbird.cnpcefaddon.mixin.impl;
 
 import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import yesman.epicfight.api.animation.LivingMotion;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.data.reloader.MobPatchReloadListener;
+import yesman.epicfight.particle.HitParticleType;
 import yesman.epicfight.world.capabilities.entitypatch.Faction;
 import yesman.epicfight.world.damagesource.StunType;
 import yesman.epicfight.world.entity.ai.goal.CombatBehaviors;
@@ -32,4 +34,10 @@ public interface ICustomMobPatchProvider {
     void setChasingSpeed(double speed);
     @Accessor(remap = false)
     void setScale(float scale);
+    @Accessor(remap = false)
+    void setSwingSound(SoundEvent value);
+    @Accessor(remap = false)
+    void setHitSound(SoundEvent value);
+    @Accessor(remap = false)
+    void setHitParticle(HitParticleType value);
 }

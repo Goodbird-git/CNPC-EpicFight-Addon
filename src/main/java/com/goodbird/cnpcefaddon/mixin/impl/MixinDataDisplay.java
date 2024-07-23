@@ -1,5 +1,6 @@
 package com.goodbird.cnpcefaddon.mixin.impl;
 
+import com.goodbird.cnpcefaddon.mixin.IAttributeMap;
 import com.goodbird.cnpcefaddon.mixin.IDataDisplay;
 import com.goodbird.cnpcefaddon.mixin.IMixinCapabilityDispatcher;
 import net.minecraft.nbt.CompoundTag;
@@ -17,6 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import yesman.epicfight.world.capabilities.entitypatch.EntityPatch;
 import yesman.epicfight.world.capabilities.provider.EntityPatchProvider;
+import yesman.epicfight.world.entity.ai.attribute.EpicFightAttributeSupplier;
 
 @Mixin(value = DataDisplay.class, priority = 1001)
 public class MixinDataDisplay implements IDataDisplay {
@@ -62,6 +64,7 @@ public class MixinDataDisplay implements IDataDisplay {
     private void cNPC_EpicFight_Addon$updateModelCap(){
         ICapabilityProvider[] caps = ((IMixinCapabilityDispatcher)(Object)((MixinCapabilityProvider)npc).invokeGetCapabilities()).getCaps();
         EntityPatchProvider newProvider = new EntityPatchProvider(npc);
+        ((IAttributeMap)npc.getAttributes()).setSupplier(new EpicFightAttributeSupplier(((IAttributeMap)npc.getAttributes()).getSupplier()));
         ((EntityPatch)newProvider.get()).onConstructed(npc);
         ((EntityPatch)newProvider.get()).onJoinWorld(npc, new EntityJoinLevelEvent(npc,npc.level()));
         if(newProvider.hasCapability()){

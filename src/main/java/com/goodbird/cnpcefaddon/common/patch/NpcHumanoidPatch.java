@@ -25,7 +25,7 @@ public class NpcHumanoidPatch<T extends PathfinderMob> extends CustomHumanoidMob
         if(!this.original.getEntityData().hasItem(STUN_SHIELD)) {
             this.original.getEntityData().define(STUN_SHIELD, Float.valueOf(0.0F));
             this.original.getEntityData().define(MAX_STUN_SHIELD, Float.valueOf(0.0F));
-            this.original.getEntityData().define(EXECUTION_RESISTANCE, Integer.valueOf(1));
+            this.original.getEntityData().define(EXECUTION_RESISTANCE, Integer.valueOf(0));
             this.original.getEntityData().define(AIRBORNE, Boolean.valueOf(false));
         }
     }

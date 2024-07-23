@@ -9,6 +9,7 @@ import yesman.epicfight.client.renderer.patched.entity.PHumanoidRenderer;
 import yesman.epicfight.client.renderer.patched.entity.PatchedEntityRenderer;
 
 import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 @Mixin(RenderEngine.class)
@@ -17,5 +18,5 @@ public interface IMixinRenderEngine {
     PHumanoidRenderer<?, ?, ?, ?, ?> getBasicHumanoidRenderer();
 
     @Accessor(remap = false)
-    BiMap<EntityType<?>, Supplier<PatchedEntityRenderer>> getEntityRendererProvider();
+    BiMap<EntityType<?>, Function<EntityType<?>, PatchedEntityRenderer>> getEntityRendererProvider();
 }
