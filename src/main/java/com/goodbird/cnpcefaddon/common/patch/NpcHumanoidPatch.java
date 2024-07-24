@@ -4,6 +4,8 @@ import com.goodbird.cnpcefaddon.common.provider.NpcHumanoidPatchProvider;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.item.ItemStack;
+import noppes.npcs.entity.EntityNPCInterface;
+import yesman.epicfight.api.utils.math.OpenMatrix4f;
 import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.main.EpicFightMod;
 import yesman.epicfight.model.armature.HumanoidArmature;
@@ -28,5 +30,10 @@ public class NpcHumanoidPatch<T extends PathfinderMob> extends CustomHumanoidMob
             this.original.getEntityData().define(EXECUTION_RESISTANCE, Integer.valueOf(1));
             this.original.getEntityData().define(AIRBORNE, Boolean.valueOf(false));
         }
+    }
+
+    public OpenMatrix4f getModelMatrix(float partialTicks) {
+        float scale = ((EntityNPCInterface)original).display.getSize()/5f;
+        return super.getModelMatrix(partialTicks).scale(scale, scale, scale);
     }
 }
