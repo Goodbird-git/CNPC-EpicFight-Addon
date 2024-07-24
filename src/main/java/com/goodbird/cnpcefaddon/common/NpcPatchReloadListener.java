@@ -45,15 +45,18 @@ import java.util.stream.Stream;
 public class NpcPatchReloadListener extends SimpleJsonResourceReloadListener {
     private static final Gson GSON = (new GsonBuilder()).create();
 
-    public static final NpcBranchPatchProvider branchPatchProvider = new NpcBranchPatchProvider();
-    public static final Set<ResourceLocation> AVAILABLE_MODELS = new HashSet<>();
-    public static final Map<ResourceLocation, CompoundTag> TAGMAP = Maps.newHashMap();
+    public static NpcBranchPatchProvider branchPatchProvider = new NpcBranchPatchProvider();
+    public static Set<ResourceLocation> AVAILABLE_MODELS = new HashSet<>();
+    public static Map<ResourceLocation, CompoundTag> TAGMAP = Maps.newHashMap();
 
     public NpcPatchReloadListener() {
         super(GSON, "npc_epicfight_mobpatch");
     }
 
     protected void apply(Map<ResourceLocation, JsonElement> objectIn, ResourceManager resourceManagerIn, ProfilerFiller profilerIn) {
+        branchPatchProvider = new NpcBranchPatchProvider();
+        AVAILABLE_MODELS = new HashSet<>();
+        TAGMAP = Maps.newHashMap();
         for (Map.Entry<ResourceLocation, JsonElement> entry : objectIn.entrySet()) {
             CompoundTag tag = null;
             try {

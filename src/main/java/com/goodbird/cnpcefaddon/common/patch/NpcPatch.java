@@ -6,7 +6,9 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.item.ItemStack;
+import noppes.npcs.entity.EntityNPCInterface;
 import yesman.epicfight.api.model.Armature;
+import yesman.epicfight.api.utils.math.OpenMatrix4f;
 import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.main.EpicFightMod;
 import yesman.epicfight.world.capabilities.entitypatch.CustomMobPatch;
@@ -31,5 +33,10 @@ public class NpcPatch<T extends PathfinderMob> extends CustomMobPatch<T> impleme
             this.original.getEntityData().define(EXECUTION_RESISTANCE, Integer.valueOf(1));
             this.original.getEntityData().define(AIRBORNE, Boolean.valueOf(false));
         }
+    }
+
+    public OpenMatrix4f getModelMatrix(float partialTicks) {
+        float scale = ((EntityNPCInterface)original).display.getSize()/5f;
+        return super.getModelMatrix(partialTicks).scale(scale, scale, scale);
     }
 }
