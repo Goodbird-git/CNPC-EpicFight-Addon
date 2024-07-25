@@ -11,7 +11,8 @@
     "MixinClientConfig",
     "MixinDataDisplay",
     "MixinEntityLivingWrapper",
-    "MixinEntityNpcInterface"
+    "MixinEntityNpcInterface",
+    "MixinNPCWrapper"
   ],
   "client": [
     "IMixinRenderEngine",
