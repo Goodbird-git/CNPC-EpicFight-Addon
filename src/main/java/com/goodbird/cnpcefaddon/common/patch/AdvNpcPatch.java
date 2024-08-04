@@ -5,6 +5,8 @@ import com.goodbird.cnpcefaddon.common.provider.NpcPatchProvider;
 import com.nameless.indestructible.data.AdvancedMobpatchReloader;
 import com.nameless.indestructible.world.capability.AdvancedCustomHumanoidMobPatch;
 import net.minecraft.world.entity.PathfinderMob;
+import noppes.npcs.entity.EntityNPCInterface;
+import yesman.epicfight.api.utils.math.OpenMatrix4f;
 import yesman.epicfight.main.EpicFightMod;
 import yesman.epicfight.world.capabilities.entitypatch.Faction;
 
@@ -24,5 +26,10 @@ public class AdvNpcPatch<T extends PathfinderMob> extends AdvancedCustomHumanoid
         }catch (Exception e){
 
         }
+    }
+
+    public OpenMatrix4f getModelMatrix(float partialTicks) {
+        float scale = ((EntityNPCInterface)original).display.getSize()/5f;
+        return super.getModelMatrix(partialTicks).scale(scale, scale, scale);
     }
 }
