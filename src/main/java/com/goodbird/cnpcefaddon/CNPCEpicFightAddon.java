@@ -2,6 +2,7 @@ package com.goodbird.cnpcefaddon;
 
 import com.goodbird.cnpcefaddon.common.AdvNpcPatchReloader;
 import com.goodbird.cnpcefaddon.common.NpcPatchReloadListener;
+import com.goodbird.cnpcefaddon.common.network.NetworkHandler;
 import com.goodbird.cnpcefaddon.common.network.SPDatapackSync;
 import com.nameless.indestructible.data.AdvancedMobpatchReloader;
 import net.minecraft.nbt.CompoundTag;
@@ -10,6 +11,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.Logging;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -31,7 +33,7 @@ public class CNPCEpicFightAddon {
     }
 
     private void doCommonStuff(FMLCommonSetupEvent event) {
-        EpicFightNetworkManager.INSTANCE.registerMessage(99, SPDatapackSync.class, SPDatapackSync::toBytes, SPDatapackSync::fromBytes, SPDatapackSync::handle);
+        NetworkHandler.register();
     }
 
     private void reloadListenerEvent(AddReloadListenerEvent event) {
@@ -49,11 +51,11 @@ public class CNPCEpicFightAddon {
         }
         if (player != null) {
             if (!player.getServer().isSingleplayerOwner(player.getGameProfile())) {
-                EpicFightNetworkManager.sendToPlayer(mobPatchPacket, player);
+                NetworkHandler.send(player, mobPatchPacket);
             }
         } else {
             event.getPlayerList().getPlayers().forEach((serverPlayer) -> {
-                EpicFightNetworkManager.sendToPlayer(mobPatchPacket, serverPlayer);
+                NetworkHandler.send(serverPlayer, mobPatchPacket);
             });
         }
 

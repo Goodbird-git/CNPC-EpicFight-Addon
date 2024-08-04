@@ -52,14 +52,16 @@ public class AdvNpcPatchReloader  extends SimpleJsonResourceReloadListener {
             }
             NpcPatchReloadListener.branchPatchProvider.addProvider(entry.getKey(), deserializeMobPatchProvider(tag, false));
             NpcPatchReloadListener.AVAILABLE_MODELS.add(entry.getKey());
-            NpcPatchReloadListener.TAGMAP.put(entry.getKey(), MobPatchReloadListener.filterClientData(tag));
+            CompoundTag filteredTag = MobPatchReloadListener.filterClientData(tag);
+            filteredTag.putString("patchType", "ADVANCED");
+            NpcPatchReloadListener.TAGMAP.put(entry.getKey(), filteredTag);
             EntityPatchProvider.putCustomEntityPatch(CustomEntities.entityCustomNpc, entity -> ()->NpcPatchReloadListener.branchPatchProvider.get(entity));
             if (EpicFightMod.isPhysicalClient())
                 RenderStorage.registerRenderer(entry.getKey(), tag.contains("preset") ? tag.getString("preset") : tag.getString("renderer"));
         }
     }
 
-    private static AdvNpcPatchProvider deserializeMobPatchProvider(CompoundTag tag, boolean clientSide) {
+    public static AdvNpcPatchProvider deserializeMobPatchProvider(CompoundTag tag, boolean clientSide) {
         AdvNpcPatchProvider provider = new AdvNpcPatchProvider();
         provider.setAttributeValues(AdvancedMobpatchReloader.deserializeAdvancedAttributes(tag.getCompound("attributes")));
         ResourceLocation modelLocation = new ResourceLocation(tag.getString("model"));

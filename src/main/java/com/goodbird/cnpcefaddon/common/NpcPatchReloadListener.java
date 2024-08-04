@@ -66,7 +66,9 @@ public class NpcPatchReloadListener extends SimpleJsonResourceReloadListener {
             }
             branchPatchProvider.addProvider(entry.getKey(), deserializeMobPatchProvider(tag, false));
             AVAILABLE_MODELS.add(entry.getKey());
-            TAGMAP.put(entry.getKey(), MobPatchReloadListener.filterClientData(tag));
+            CompoundTag filteredTag = MobPatchReloadListener.filterClientData(tag);
+            filteredTag.putString("patchType", "NORMAL");
+            TAGMAP.put(entry.getKey(), filteredTag);
             EntityPatchProvider.putCustomEntityPatch(CustomEntities.entityCustomNpc, entity -> ()->branchPatchProvider.get(entity));
             if (EpicFightMod.isPhysicalClient())
                 RenderStorage.registerRenderer(entry.getKey(), tag.contains("preset") ? tag.getString("preset") : tag.getString("renderer"));
@@ -145,7 +147,13 @@ public class NpcPatchReloadListener extends SimpleJsonResourceReloadListener {
             if (tag.contains("disabled"))
                 disabled = tag.getBoolean("disabled");
             ResourceLocation key = new ResourceLocation(tag.getString("id"));
-            MobPatchReloadListener.AbstractMobPatchProvider provider = deserializeMobPatchProvider(tag, false);
+            MobPatchReloadListener.AbstractMobPatchProvider provider = null;
+            if(tag.getString("patchType").equals("ADVANCED")){
+                provider = AdvNpcPatchReloader.deserializeMobPatchProvider(tag, false);
+            }else{
+                provider = deserializeMobPatchProvider(tag, false);
+            }
+
             branchPatchProvider.addProvider(key, provider);
             AVAILABLE_MODELS.add(key);
             EntityPatchProvider.putCustomEntityPatch(CustomEntities.entityCustomNpc, entity -> ()->branchPatchProvider.get(entity));
