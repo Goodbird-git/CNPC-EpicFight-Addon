@@ -35,10 +35,10 @@ public class RenderStorage {
             EntityRendererProvider.Context context = new EntityRendererProvider.Context(erd, engine.minecraft.getItemRenderer(), engine.minecraft.getBlockRenderer(), erd.getItemInHandRenderer(), engine.minecraft.getResourceManager(), engine.minecraft.getEntityModels(), engine.minecraft.font);
             if (compound.getBoolean("humanoid")) {
                 HumanoidMesh mesh = Meshes.getOrCreateAnimatedMesh(engine.minecraft.getResourceManager(), new ResourceLocation(compound.getString("model")), HumanoidMesh::new);
-                renderersMap.put(resourceLocation, new PCustomHumanoidEntityRenderer(mesh, context, CustomEntities.entityCustomNpc));
+                renderersMap.put(resourceLocation, new PCustomHumanoidEntityRenderer(()->mesh, context, CustomEntities.entityCustomNpc));
             } else {
                 AnimatedMesh mesh = Meshes.getOrCreateAnimatedMesh(engine.minecraft.getResourceManager(), new ResourceLocation(compound.getString("model")), AnimatedMesh::new);
-                renderersMap.put(resourceLocation, new PCustomEntityRenderer(mesh, context, CustomEntities.entityCustomNpc));
+                renderersMap.put(resourceLocation, new PCustomEntityRenderer(()->mesh, context));
             }
         }  else {
             EntityType<?> presetEntityType = ForgeRegistries.ENTITY_TYPES.getValue(new ResourceLocation(renderer));

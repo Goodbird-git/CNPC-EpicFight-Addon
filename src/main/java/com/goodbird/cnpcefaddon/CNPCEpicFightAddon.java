@@ -1,6 +1,8 @@
 package com.goodbird.cnpcefaddon;
 
+import com.goodbird.cnpcefaddon.common.AdvNpcPatchReloader;
 import com.goodbird.cnpcefaddon.common.NpcPatchReloadListener;
+import com.goodbird.cnpcefaddon.common.network.NetworkHandler;
 import com.goodbird.cnpcefaddon.common.network.SPDatapackSync;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -8,6 +10,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -25,11 +28,14 @@ public class CNPCEpicFightAddon {
     }
 
     private void doCommonStuff(FMLCommonSetupEvent event) {
-        EpicFightNetworkManager.INSTANCE.registerMessage(99, SPDatapackSync.class, SPDatapackSync::toBytes, SPDatapackSync::fromBytes, SPDatapackSync::handle);
+        NetworkHandler.register();
     }
 
     private void reloadListenerEvent(AddReloadListenerEvent event) {
         event.addListener(new NpcPatchReloadListener());
+        if(ModList.get().isLoaded("indestructible")){
+            event.addListener(new AdvNpcPatchReloader());
+        }
     }
 
     private void onDatapackSync(OnDatapackSyncEvent event) {
@@ -40,11 +46,11 @@ public class CNPCEpicFightAddon {
         }
         if (player != null) {
             if (!player.getServer().isSingleplayerOwner(player.getGameProfile())) {
-                EpicFightNetworkManager.sendToPlayer(mobPatchPacket, player);
+                NetworkHandler.send(player, mobPatchPacket);
             }
         } else {
             event.getPlayerList().getPlayers().forEach((serverPlayer) -> {
-                EpicFightNetworkManager.sendToPlayer(mobPatchPacket, serverPlayer);
+                NetworkHandler.send(serverPlayer, mobPatchPacket);
             });
         }
 

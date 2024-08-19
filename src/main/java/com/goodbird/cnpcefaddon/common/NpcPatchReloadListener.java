@@ -25,6 +25,7 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.ForgeRegistries;
 import noppes.npcs.CustomEntities;
 import yesman.epicfight.api.client.model.Meshes;
@@ -66,6 +67,8 @@ public class NpcPatchReloadListener extends SimpleJsonResourceReloadListener {
             }
             branchPatchProvider.addProvider(entry.getKey(), deserializeMobPatchProvider(tag, false, resourceManagerIn));
             AVAILABLE_MODELS.add(entry.getKey());
+            CompoundTag filteredTag = MobPatchReloadListener.filterClientData(tag);
+            filteredTag.putString("patchType", "NORMAL");
             TAGMAP.put(entry.getKey(), MobPatchReloadListener.filterClientData(tag));
             EntityPatchProvider.putCustomEntityPatch(CustomEntities.entityCustomNpc, entity -> ()->branchPatchProvider.get(entity));
             if (EpicFightMod.isPhysicalClient())
@@ -149,7 +152,12 @@ public class NpcPatchReloadListener extends SimpleJsonResourceReloadListener {
             if (tag.contains("disabled"))
                 disabled = tag.getBoolean("disabled");
             ResourceLocation key = new ResourceLocation(tag.getString("id"));
-            MobPatchReloadListener.AbstractMobPatchProvider provider = deserializeMobPatchProvider(tag, false, Minecraft.getInstance().getResourceManager());
+            MobPatchReloadListener.AbstractMobPatchProvider provider = null;
+            if(ModList.get().isLoaded("indestructible") && tag.getString("patchType").equals("ADVANCED")){
+                provider = AdvNpcPatchReloader.deserializeMobPatchProvider(tag, false);
+            }else{
+                provider = deserializeMobPatchProvider(tag, false, Minecraft.getInstance().getResourceManager());
+            }
             branchPatchProvider.addProvider(key, provider);
             AVAILABLE_MODELS.add(key);
             EntityPatchProvider.putCustomEntityPatch(CustomEntities.entityCustomNpc, entity -> ()->branchPatchProvider.get(entity));
