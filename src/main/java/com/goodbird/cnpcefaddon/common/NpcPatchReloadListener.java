@@ -149,7 +149,12 @@ public class NpcPatchReloadListener extends SimpleJsonResourceReloadListener {
             ResourceLocation key = new ResourceLocation(tag.getString("id"));
             MobPatchReloadListener.AbstractMobPatchProvider provider = null;
             if(tag.getString("patchType").equals("ADVANCED")){
-                provider = AdvNpcPatchReloader.deserializeMobPatchProvider(tag, false);
+                try {
+                    provider = (MobPatchReloadListener.AbstractMobPatchProvider) Class.forName("com.goodbird.cnpcefaddon.common.AdvNpcPatchReloader")
+                            .getMethod("deserializeMobPatchProvider", CompoundTag.class, boolean.class).invoke(null, tag, false);
+                }catch (Exception e){
+
+                }
             }else{
                 provider = deserializeMobPatchProvider(tag, false);
             }
