@@ -64,6 +64,7 @@ public class MixinDataDisplay implements IDataDisplay {
     private void cNPC_EpicFight_Addon$updateModelCap(){
         ICapabilityProvider[] caps = ((IMixinCapabilityDispatcher)(Object)((MixinCapabilityProvider)npc).invokeGetCapabilities()).getCaps();
         EntityPatchProvider newProvider = new EntityPatchProvider(npc);
+        if(newProvider.get()==null) return;
         ((IAttributeMap)npc.getAttributes()).setSupplier(new EpicFightAttributeSupplier(((IAttributeMap)npc.getAttributes()).getSupplier()));
         ((EntityPatch)newProvider.get()).onConstructed(npc);
         ((EntityPatch)newProvider.get()).onJoinWorld(npc, new EntityJoinLevelEvent(npc,npc.level()));
