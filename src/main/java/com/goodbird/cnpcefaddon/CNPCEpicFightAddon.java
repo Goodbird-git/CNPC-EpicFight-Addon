@@ -6,6 +6,7 @@ import com.goodbird.cnpcefaddon.common.network.NetworkHandler;
 import com.goodbird.cnpcefaddon.common.network.SPDatapackSync;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
@@ -34,7 +35,9 @@ public class CNPCEpicFightAddon {
     private void reloadListenerEvent(AddReloadListenerEvent event) {
         event.addListener(new NpcPatchReloadListener());
         if(ModList.get().isLoaded("indestructible")){
-            event.addListener(new AdvNpcPatchReloader());
+            try {
+                event.addListener((PreparableReloadListener) Class.forName("com.goodbird.cnpcefaddon.common.AdvNpcPatchReloader").getConstructor().newInstance());
+            }catch (Exception e){}
         }
     }
 
