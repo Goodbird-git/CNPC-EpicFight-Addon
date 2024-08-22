@@ -17,6 +17,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import yesman.epicfight.network.EpicFightNetworkManager;
 
 import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Mod(CNPCEpicFightAddon.MODID)
@@ -41,7 +42,7 @@ public class CNPCEpicFightAddon {
     private void onDatapackSync(OnDatapackSyncEvent event) {
         ServerPlayer player = event.getPlayer();
         SPDatapackSync mobPatchPacket = new SPDatapackSync(NpcPatchReloadListener.TAGMAP.size());
-        for(CompoundTag tag : NpcPatchReloadListener.getDataStream().toList()){
+        for(CompoundTag tag : NpcPatchReloadListener.getDataStream().collect(Collectors.toList())){
             mobPatchPacket.write(tag);
         }
         if (player != null) {
