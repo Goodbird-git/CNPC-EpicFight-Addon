@@ -1,7 +1,7 @@
 {
   "required": true,
   "package": "com.goodbird.cnpcefaddon.mixin.impl",
-  "compatibilityLevel": "JAVA_8",
+  "compatibilityLevel": "JAVA_17",
   "refmap": "cnpcefaddon.refmap.json",
   "mixins": [
     "ICustomHumanoidMobPatchProvider",

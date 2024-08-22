@@ -24,6 +24,8 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.ModList;
+import net.minecraftforge.registries.ForgeRegistries;
 import noppes.npcs.CustomEntities;
 import yesman.epicfight.api.client.model.Meshes;
 import yesman.epicfight.api.data.reloader.MobPatchReloadListener;
@@ -66,6 +68,8 @@ public class NpcPatchReloadListener extends SimpleJsonResourceReloadListener {
             }
             branchPatchProvider.addProvider(entry.getKey(), deserializeMobPatchProvider(tag, false));
             AVAILABLE_MODELS.add(entry.getKey());
+            CompoundTag filteredTag = MobPatchReloadListener.filterClientData(tag);
+            filteredTag.putString("patchType", "NORMAL");
             TAGMAP.put(entry.getKey(), MobPatchReloadListener.filterClientData(tag));
             EntityPatchProvider.putCustomEntityPatch(CustomEntities.entityCustomNpc, entity -> ()->branchPatchProvider.get(entity));
             if (EpicFightMod.isPhysicalClient())
@@ -145,7 +149,17 @@ public class NpcPatchReloadListener extends SimpleJsonResourceReloadListener {
             if (tag.contains("disabled"))
                 disabled = tag.getBoolean("disabled");
             ResourceLocation key = new ResourceLocation(tag.getString("id"));
-            MobPatchReloadListener.AbstractMobPatchProvider provider = deserializeMobPatchProvider(tag, false);
+            MobPatchReloadListener.AbstractMobPatchProvider provider = null;
+            if(ModList.get().isLoaded("indestructible") && tag.getString("patchType").equals("ADVANCED")){
+                try {
+                    provider = (MobPatchReloadListener.AbstractMobPatchProvider) Class.forName("com.goodbird.cnpcefaddon.common.AdvNpcPatchReloader")
+                            .getMethod("deserializeMobPatchProvider", CompoundTag.class, boolean.class).invoke(null, tag, false);
+                }catch (Exception e){
+
+                }
+            }else{
+                provider = deserializeMobPatchProvider(tag, false);
+            }
             branchPatchProvider.addProvider(key, provider);
             AVAILABLE_MODELS.add(key);
             EntityPatchProvider.putCustomEntityPatch(CustomEntities.entityCustomNpc, entity -> ()->branchPatchProvider.get(entity));

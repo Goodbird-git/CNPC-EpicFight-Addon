@@ -1,34 +1,43 @@
-modLoader = "javafml"
-loaderVersion = "[36,)"
+# This is an example mods.toml file. It contains the data relating to the loading mods.
+# There are several mandatory fields (#mandatory), and many more that are optional (#optional).
+# The overall format is standard TOML format, v0.5.0.
+# Note that there are a couple of TOML lists in this file.
+# Find more information on toml format here:  https://github.com/toml-lang/toml
 
-license = "All Rights Reserved"
-#issueTrackerURL="http://my.issue.tracker/"
+# The name of the mod loader type to load - for regular FML @Mod mods it should be javafml
+modLoader="javafml" #mandatory
 
-[[mods]]
-modId = "cnpcefaddon"
-version = "${file.jarVersion}"
-displayName = "CNPC-EpicFight-Addon"
+# A version range to match for said mod loader - for regular FML @Mod it will be the forge version
+loaderVersion="[43,)" #mandatory (24 is current forge version)
 
-#updateJSONURL="http://myurl.me/"
-#displayURL="http://example.com/"
-#logoFile="logo.png"
-#credits="Thanks for this example mod goes to Java"
-authors="Goodbird"
+# A URL to refer people to when problems occur with this mod
+issueTrackerURL="http://my.issue.tracker/" #optional
 
-description = '''
+license="CC BY-NC"
+
+# A list of mods - how many allowed here is determined by the individual mod loader
+[[mods]] #mandatory
+modId="cnpcefaddon" #mandatory
+version="${file.jarVersion}" #mandatory
+displayName="CNPC-EpicFight-Addon" #mandatory
+#updateJSONURL="" #optional
+displayURL="" #optional
+#logoFile="" #optional
+#credits="" #optional
+authors="Goodbird" #optional
+description='''
 A compatibility bridge between CustomNPCs and EpicFight
-'''
+    '''
 
+[[dependencies.cnpcefaddon]] #optional
+modId="forge" #mandatory
+mandatory=true #mandatory
+versionRange="[43,)" #mandatory
+ordering="NONE"
+side="BOTH"
 [[dependencies.cnpcefaddon]]
-modId = "minecraft"
-versionRange = "[1.18.2,1.19)"
-mandatory = true
-side = "BOTH"
-ordering = "NONE"
-
-[[dependencies.cnpcefaddon]]
-modId = "forge"
-versionRange = "[36,)"
-mandatory = true
-side = "BOTH"
-ordering = "NONE"
+modId="minecraft"
+mandatory=true
+versionRange="[1.19.2,1.20)"
+ordering="NONE"
+side="BOTH"
