@@ -11,7 +11,6 @@ import com.google.gson.JsonElement;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.nameless.indestructible.api.animation.types.CommandEvent;
 import com.nameless.indestructible.data.AdvancedMobpatchReloader;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.TagParser;
@@ -50,7 +49,7 @@ public class AdvNpcPatchReloader  extends SimpleJsonResourceReloadListener {
             } catch (CommandSyntaxException e) {
                 e.printStackTrace();
             }
-            NpcPatchReloadListener.branchPatchProvider.addProvider(entry.getKey(), deserializeMobPatchProvider(tag, false));
+            NpcPatchReloadListener.branchPatchProvider.addProvider(entry.getKey(), deserializeMobPatchProvider(resourceManagerIn, tag, false));
             NpcPatchReloadListener.AVAILABLE_MODELS.add(entry.getKey());
             CompoundTag filteredTag = MobPatchReloadListener.filterClientData(tag);
             filteredTag.putString("patchType", "ADVANCED");
@@ -61,15 +60,15 @@ public class AdvNpcPatchReloader  extends SimpleJsonResourceReloadListener {
         }
     }
 
-    public static AdvNpcPatchProvider deserializeMobPatchProvider(CompoundTag tag, boolean clientSide) {
+    public static AdvNpcPatchProvider deserializeMobPatchProvider(ResourceManager resourceManagerIn, CompoundTag tag, boolean clientSide) {
         AdvNpcPatchProvider provider = new AdvNpcPatchProvider();
         provider.setAttributeValues(AdvancedMobpatchReloader.deserializeAdvancedAttributes(tag.getCompound("attributes")));
         ResourceLocation modelLocation = new ResourceLocation(tag.getString("model"));
         ResourceLocation armatureLocation = new ResourceLocation(tag.getString("armature"));
         if (EpicFightMod.isPhysicalClient()) {
-            Meshes.getOrCreateAnimatedMesh(Minecraft.getInstance().getResourceManager(), modelLocation, HumanoidMesh::new);
+            Meshes.getOrCreateAnimatedMesh(resourceManagerIn,modelLocation, HumanoidMesh::new);
         }
-        Armature armature = Armatures.getOrCreateArmature(Minecraft.getInstance().getResourceManager(), armatureLocation, HumanoidArmature::new);
+        Armature armature = Armatures.getOrCreateArmature(resourceManagerIn,armatureLocation, HumanoidArmature::new);
         ((INpcPatchProvider)provider).setArmature(armature);
         Armatures.registerEntityTypeArmature(CustomEntities.entityCustomNpc, patch -> {
             if(patch instanceof INpcPatch) {
