@@ -28,9 +28,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.ForgeRegistries;
 import noppes.npcs.CustomEntities;
+import yesman.epicfight.api.client.model.AnimatedMesh;
 import yesman.epicfight.api.client.model.Meshes;
 import yesman.epicfight.api.data.reloader.MobPatchReloadListener;
 import yesman.epicfight.api.model.Armature;
+import yesman.epicfight.client.mesh.HumanoidMesh;
 import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.main.EpicFightMod;
 import yesman.epicfight.particle.HitParticleType;
@@ -99,10 +101,8 @@ public class NpcPatchReloadListener extends SimpleJsonResourceReloadListener {
         npcPatchProvider.setAttributeValues(MobPatchReloadListener.deserializeAttributes(tag.getCompound("attributes")));
         ResourceLocation modelLocation = new ResourceLocation(tag.getString("model"));
         ResourceLocation armatureLocation = new ResourceLocation(tag.getString("armature"));
-        modelLocation = new ResourceLocation(modelLocation.getNamespace(), "animmodels/" + modelLocation.getPath() + ".json");
-        armatureLocation = new ResourceLocation(armatureLocation.getNamespace(), "animmodels/" + armatureLocation.getPath() + ".json");
         if (EpicFightMod.isPhysicalClient()) {
-            Meshes.getOrCreateAnimatedMesh(Minecraft.getInstance().getResourceManager(), modelLocation, !humanoid ? yesman.epicfight.api.client.model.AnimatedMesh::new : yesman.epicfight.client.mesh.HumanoidMesh::new);
+            Meshes.getOrCreateAnimatedMesh(Minecraft.getInstance().getResourceManager(), modelLocation, humanoid ? HumanoidMesh::new : AnimatedMesh::new);
         }
         Armature armature = Armatures.getOrCreateArmature(resourceManager, armatureLocation, !humanoid ? Armature::new : yesman.epicfight.model.armature.HumanoidArmature::new);
         ((INpcPatchProvider)provider).setArmature(armature);

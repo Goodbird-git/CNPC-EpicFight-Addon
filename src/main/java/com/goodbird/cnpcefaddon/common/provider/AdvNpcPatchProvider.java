@@ -6,12 +6,14 @@ import com.nameless.indestructible.api.animation.types.CommandEvent;
 import com.nameless.indestructible.data.AdvancedMobpatchReloader;
 import com.nameless.indestructible.world.capability.AdvancedCustomHumanoidMobPatch;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import yesman.epicfight.api.animation.LivingMotion;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.model.Armature;
 import yesman.epicfight.model.armature.HumanoidArmature;
+import yesman.epicfight.particle.HitParticleType;
 import yesman.epicfight.world.capabilities.entitypatch.EntityPatch;
 import yesman.epicfight.world.capabilities.entitypatch.Faction;
 import yesman.epicfight.world.capabilities.entitypatch.HumanoidMobPatch;
@@ -118,5 +120,17 @@ public class AdvNpcPatchProvider extends AdvancedMobpatchReloader.AdvancedCustom
 
     public void setAttackRadius(float val){
         this.attackRadius = val;
+    }
+
+    public void setSwingSound(SoundEvent event){
+        this.swingSound = event;
+    }
+
+    public void setHitSound(SoundEvent event){
+        this.hitSound = event;
+    }
+
+    public void setHitParticle(HitParticleType type){
+        this.hitParticle = type;
     }
 }

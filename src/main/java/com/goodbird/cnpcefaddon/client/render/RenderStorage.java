@@ -33,7 +33,7 @@ public class RenderStorage {
         } else if ("epicfight:custom".equals(renderer)) {
             EntityRenderDispatcher erd = engine.minecraft.getEntityRenderDispatcher();
             EntityRendererProvider.Context context = new EntityRendererProvider.Context(erd, engine.minecraft.getItemRenderer(), engine.minecraft.getBlockRenderer(), erd.getItemInHandRenderer(), engine.minecraft.getResourceManager(), engine.minecraft.getEntityModels(), engine.minecraft.font);
-            if (compound.getBoolean("humanoid")) {
+            if (compound.getBoolean("isHumanoid")) {
                 HumanoidMesh mesh = Meshes.getOrCreateAnimatedMesh(engine.minecraft.getResourceManager(), new ResourceLocation(compound.getString("model")), HumanoidMesh::new);
                 renderersMap.put(resourceLocation, new PCustomHumanoidEntityRenderer(()->mesh, context, CustomEntities.entityCustomNpc));
             } else {

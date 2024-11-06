@@ -18,6 +18,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraftforge.registries.ForgeRegistries;
 import noppes.npcs.CustomEntities;
 import yesman.epicfight.api.client.model.Meshes;
 import yesman.epicfight.api.data.reloader.MobPatchReloadListener;
@@ -26,6 +27,7 @@ import yesman.epicfight.client.mesh.HumanoidMesh;
 import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.main.EpicFightMod;
 import yesman.epicfight.model.armature.HumanoidArmature;
+import yesman.epicfight.particle.HitParticleType;
 import yesman.epicfight.world.capabilities.entitypatch.Faction;
 import yesman.epicfight.world.capabilities.provider.EntityPatchProvider;
 import yesman.epicfight.world.damagesource.StunType;
@@ -83,6 +85,12 @@ public class AdvNpcPatchReloader  extends SimpleJsonResourceReloadListener {
         provider.setFaction(Faction.valueOf(tag.getString("faction").toUpperCase(Locale.ROOT)));
         provider.setScale(tag.getCompound("attributes").contains("scale") ? (float)tag.getCompound("attributes").getDouble("scale") : 1.0F);
         provider.setMaxStunShield(tag.getCompound("attributes").contains("max_stun_shield") ? (float)tag.getCompound("attributes").getDouble("max_stun_shield") : 0.0F);
+        if (tag.contains("swing_sound"))
+            provider.setSwingSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(tag.getString("swing_sound"))));
+        if (tag.contains("hit_sound"))
+            provider.setHitSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(tag.getString("hit_sound"))));
+        if (tag.contains("hit_particle"))
+            provider.setHitParticle((HitParticleType)ForgeRegistries.PARTICLE_TYPES.getValue(new ResourceLocation(tag.getString("hit_particle"))));
         if (!clientSide) {
             provider.setStunAnimations(MobPatchReloadListener.deserializeStunAnimations(tag.getCompound("stun_animations")));
             provider.setChasingSpeed(tag.getCompound("attributes").getDouble("chasing_speed"));
