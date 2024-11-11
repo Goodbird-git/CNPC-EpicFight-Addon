@@ -104,7 +104,7 @@ public class NpcPatchReloadListener extends SimpleJsonResourceReloadListener {
         if (EpicFightMod.isPhysicalClient()) {
             Meshes.getOrCreateAnimatedMesh(Minecraft.getInstance().getResourceManager(), modelLocation, humanoid ? HumanoidMesh::new : AnimatedMesh::new);
         }
-        Armature armature = Armatures.getOrCreateArmature(resourceManager, armatureLocation, !humanoid ? Armature::new : yesman.epicfight.model.armature.HumanoidArmature::new);
+        Armature armature = Armatures.getOrCreateArmature(resourceManager, armatureLocation, humanoid ? yesman.epicfight.model.armature.HumanoidArmature::new : Armature::new);
         ((INpcPatchProvider)provider).setArmature(armature);
         Armatures.registerEntityTypeArmature(CustomEntities.entityCustomNpc, patch -> {
             if(patch instanceof INpcPatch) {
@@ -175,7 +175,7 @@ public class NpcPatchReloadListener extends SimpleJsonResourceReloadListener {
                     ResourceLocation armatureLocation = new ResourceLocation(tag.getString("armature"));
                     armatureLocation = new ResourceLocation(armatureLocation.getNamespace(), "animmodels/" + armatureLocation.getPath() + ".json");
                     boolean humanoid = tag.getBoolean("isHumanoid");
-                    Armature armature = Armatures.getOrCreateArmature(mc.getResourceManager(), armatureLocation, humanoid ? Armature::new : yesman.epicfight.model.armature.HumanoidArmature::new);
+                    Armature armature = Armatures.getOrCreateArmature(mc.getResourceManager(), armatureLocation, humanoid ? yesman.epicfight.model.armature.HumanoidArmature::new : Armature::new);
                     ((INpcPatchProvider)provider).setArmature(armature);
                 }
                 Armatures.registerEntityTypeArmature(CustomEntities.entityCustomNpc, patch -> {
