@@ -156,12 +156,12 @@ public class NpcPatchReloadListener extends SimpleJsonResourceReloadListener {
             if(ModList.get().isLoaded("indestructible") && tag.getString("patchType").equals("ADVANCED")){
                 try {
                     provider = (MobPatchReloadListener.AbstractMobPatchProvider) Class.forName("com.goodbird.cnpcefaddon.common.AdvNpcPatchReloader")
-                            .getMethod("deserializeMobPatchProvider", CompoundTag.class, boolean.class).invoke(null, tag, false);
+                            .getMethod("deserializeMobPatchProvider",ResourceManager.class,  CompoundTag.class, boolean.class).invoke(null,  Minecraft.getInstance().getResourceManager(), tag, true);
                 }catch (Exception e){
 
                 }
             }else{
-                provider = deserializeMobPatchProvider(tag, false, Minecraft.getInstance().getResourceManager());
+                provider = deserializeMobPatchProvider(tag, true, Minecraft.getInstance().getResourceManager());
             }
             branchPatchProvider.addProvider(key, provider);
             AVAILABLE_MODELS.add(key);
