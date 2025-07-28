@@ -1,6 +1,5 @@
 package com.goodbird.cnpcefaddon.client.gui;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import noppes.npcs.client.gui.util.GuiNPCInterface;

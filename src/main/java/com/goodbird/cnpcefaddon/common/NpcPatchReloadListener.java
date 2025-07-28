@@ -72,7 +72,7 @@ public class NpcPatchReloadListener extends SimpleJsonResourceReloadListener {
             CompoundTag filteredTag = MobPatchReloadListener.filterClientData(tag);
             filteredTag.putString("patchType", "NORMAL");
             TAGMAP.put(entry.getKey(), MobPatchReloadListener.filterClientData(tag));
-            EntityPatchProvider.putCustomEntityPatch(CustomEntities.entityCustomNpc, entity -> ()->branchPatchProvider.get(entity));
+            EntityPatchProvider.putCustomEntityPatch(CustomEntities.entityCustomNpc, entity -> () -> branchPatchProvider.get(entity));
             if (EpicFightMod.isPhysicalClient())
                 RenderStorage.registerRenderer(entry.getKey(), tag.contains("preset") ? tag.getString("preset") : tag.getString("renderer"), tag);
         }
@@ -86,7 +86,7 @@ public class NpcPatchReloadListener extends SimpleJsonResourceReloadListener {
             String presetName = tag.getString("preset");
             Function<Entity, Supplier<EntityPatch<?>>> preset = EntityPatchProvider.get(presetName);
             Armatures.registerEntityTypeArmature(CustomEntities.entityCustomNpc, patch -> {
-                if(patch instanceof INpcPatch) {
+                if (patch instanceof INpcPatch) {
                     return ((INpcPatch) patch).getArmature().deepCopy();
                 }
                 return Armatures.getRegistry(patch.getOriginal().getType()).apply(patch).deepCopy();
@@ -105,22 +105,22 @@ public class NpcPatchReloadListener extends SimpleJsonResourceReloadListener {
             Meshes.getOrCreateAnimatedMesh(Minecraft.getInstance().getResourceManager(), modelLocation, humanoid ? HumanoidMesh::new : AnimatedMesh::new);
         }
         Armature armature = Armatures.getOrCreateArmature(resourceManager, armatureLocation, humanoid ? yesman.epicfight.model.armature.HumanoidArmature::new : Armature::new);
-        ((INpcPatchProvider)provider).setArmature(armature);
+        ((INpcPatchProvider) provider).setArmature(armature);
         Armatures.registerEntityTypeArmature(CustomEntities.entityCustomNpc, patch -> {
-            if(patch instanceof INpcPatch) {
+            if (patch instanceof INpcPatch) {
                 return ((INpcPatch) patch).getArmature().deepCopy();
             }
             return Armatures.getRegistry(patch.getOriginal().getType()).apply(patch).deepCopy();
         });
         npcPatchProvider.setDefaultAnimations(MobPatchReloadListener.deserializeDefaultAnimations(tag.getCompound("default_livingmotions")));
         npcPatchProvider.setFaction(Faction.valueOf(tag.getString("faction").toUpperCase(Locale.ROOT)));
-        npcPatchProvider.setScale(tag.getCompound("attributes").contains("scale") ? (float)tag.getCompound("attributes").getDouble("scale") : 1.0F);
+        npcPatchProvider.setScale(tag.getCompound("attributes").contains("scale") ? (float) tag.getCompound("attributes").getDouble("scale") : 1.0F);
         if (tag.contains("swing_sound"))
             npcPatchProvider.setSwingSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(tag.getString("swing_sound"))));
         if (tag.contains("hit_sound"))
             npcPatchProvider.setHitSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(tag.getString("hit_sound"))));
         if (tag.contains("hit_particle"))
-            npcPatchProvider.setHitParticle((HitParticleType)ForgeRegistries.PARTICLE_TYPES.getValue(new ResourceLocation(tag.getString("hit_particle"))));
+            npcPatchProvider.setHitParticle((HitParticleType) ForgeRegistries.PARTICLE_TYPES.getValue(new ResourceLocation(tag.getString("hit_particle"))));
         if (!clientSide) {
             npcPatchProvider.setStunAnimations(MobPatchReloadListener.deserializeStunAnimations(tag.getCompound("stun_animations")));
             if (tag.getCompound("attributes").contains("chasing_speed")) {
@@ -152,34 +152,19 @@ public class NpcPatchReloadListener extends SimpleJsonResourceReloadListener {
             if (tag.contains("disabled"))
                 disabled = tag.getBoolean("disabled");
             ResourceLocation key = new ResourceLocation(tag.getString("id"));
-            MobPatchReloadListener.AbstractMobPatchProvider provider = null;
-            if(ModList.get().isLoaded("indestructible") && tag.getString("patchType").equals("ADVANCED")){
-                try {
-                    provider = (MobPatchReloadListener.AbstractMobPatchProvider) Class.forName("com.goodbird.cnpcefaddon.common.AdvNpcPatchReloader")
-                            .getMethod("deserializeMobPatchProvider",ResourceManager.class,  CompoundTag.class, boolean.class).invoke(null,  Minecraft.getInstance().getResourceManager(), tag, true);
-                }catch (Exception e){
-
-                }
-            }else{
-                provider = deserializeMobPatchProvider(tag, true, Minecraft.getInstance().getResourceManager());
-            }
+            MobPatchReloadListener.AbstractMobPatchProvider provider = deserializeMobPatchProvider(tag, true, Minecraft.getInstance().getResourceManager());
             branchPatchProvider.addProvider(key, provider);
             AVAILABLE_MODELS.add(key);
-            EntityPatchProvider.putCustomEntityPatch(CustomEntities.entityCustomNpc, entity -> ()->branchPatchProvider.get(entity));
+            EntityPatchProvider.putCustomEntityPatch(CustomEntities.entityCustomNpc, entity -> () -> branchPatchProvider.get(entity));
             if (!disabled) {
-                if (tag.contains("preset")) {
-                    //Armatures.registerEntityTypeArmature(entityType, tag.getString("preset"));
-
-                } else {
-                    Minecraft mc = Minecraft.getInstance();
-                    ResourceLocation armatureLocation = new ResourceLocation(tag.getString("armature"));
-                    armatureLocation = new ResourceLocation(armatureLocation.getNamespace(), "animmodels/" + armatureLocation.getPath() + ".json");
-                    boolean humanoid = tag.getBoolean("isHumanoid");
-                    Armature armature = Armatures.getOrCreateArmature(mc.getResourceManager(), armatureLocation, humanoid ? yesman.epicfight.model.armature.HumanoidArmature::new : Armature::new);
-                    ((INpcPatchProvider)provider).setArmature(armature);
-                }
+                Minecraft mc = Minecraft.getInstance();
+                ResourceLocation armatureLocation = new ResourceLocation(tag.getString("armature"));
+                armatureLocation = new ResourceLocation(armatureLocation.getNamespace(), "animmodels/" + armatureLocation.getPath() + ".json");
+                boolean humanoid = tag.getBoolean("isHumanoid");
+                Armature armature = Armatures.getOrCreateArmature(mc.getResourceManager(), armatureLocation, humanoid ? yesman.epicfight.model.armature.HumanoidArmature::new : Armature::new);
+                ((INpcPatchProvider) provider).setArmature(armature);
                 Armatures.registerEntityTypeArmature(CustomEntities.entityCustomNpc, patch -> {
-                    if(patch instanceof INpcPatch) {
+                    if (patch instanceof INpcPatch) {
                         return ((INpcPatch) patch).getArmature().deepCopy();
                     }
                     return Armatures.getRegistry(patch.getOriginal().getType()).apply(patch).deepCopy();
@@ -189,11 +174,3 @@ public class NpcPatchReloadListener extends SimpleJsonResourceReloadListener {
         }
     }
 }
-
-/*
-function interact(e){
-    var npc = e.npc.getMCEntity()
-    var RL = Java.type("net.minecraft.resources.ResourceLocation")
-    npc.display.setEFModel(new RL("customnpcs:skeleton"))
-}
- */
