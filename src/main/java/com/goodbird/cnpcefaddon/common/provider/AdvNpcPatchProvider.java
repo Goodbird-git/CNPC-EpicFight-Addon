@@ -2,9 +2,9 @@ package com.goodbird.cnpcefaddon.common.provider;
 
 import com.goodbird.cnpcefaddon.common.patch.AdvNpcPatch;
 import com.mojang.datafixers.util.Pair;
-import com.nameless.indestructible.api.animation.types.CommandEvent;
+import com.nameless.indestructible.api.animation.types.LivingEntityPatchEvent;
 import com.nameless.indestructible.data.AdvancedMobpatchReloader;
-import com.nameless.indestructible.world.capability.AdvancedCustomHumanoidMobPatch;
+import com.nameless.indestructible.world.ai.CombatBehaviors.GuardMotion;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
@@ -37,7 +37,7 @@ public class AdvNpcPatchProvider extends AdvancedMobpatchReloader.AdvancedCustom
         this.AHWeaponMotions = val;
     }
 
-    public void setGuardMotions(Map<WeaponCategory, Map<Style, AdvancedCustomHumanoidMobPatch.GuardMotion>> val) {
+    public void setGuardMotions(Map<WeaponCategory, Map<Style, GuardMotion>> val) {
         this.guardMotions = val;
     }
 
@@ -93,7 +93,7 @@ public class AdvNpcPatchProvider extends AdvancedMobpatchReloader.AdvancedCustom
         this.scale = val;
     }
 
-    public void setStunEvent(List<CommandEvent.StunEvent> val) {
+    public void setStunEvent(List<LivingEntityPatchEvent.StunEvent> val) {
         this.stunEvent = val;
     }
 

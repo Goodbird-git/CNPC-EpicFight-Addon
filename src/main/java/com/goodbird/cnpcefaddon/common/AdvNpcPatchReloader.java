@@ -9,7 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.nameless.indestructible.api.animation.types.CommandEvent;
+import com.nameless.indestructible.api.animation.types.LivingEntityPatchEvent;
 import com.nameless.indestructible.data.AdvancedMobpatchReloader;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -94,9 +94,9 @@ public class AdvNpcPatchReloader  extends SimpleJsonResourceReloadListener {
         if (!clientSide) {
             provider.setStunAnimations(MobPatchReloadListener.deserializeStunAnimations(tag.getCompound("stun_animations")));
             provider.setChasingSpeed(tag.getCompound("attributes").getDouble("chasing_speed"));
-            provider.setAHCombatBehaviors(AdvancedMobpatchReloader.deserializeAdvancedCombatBehaviors(tag.getList("combat_behavior", 10)));
+            provider.setAHCombatBehaviors(AdvancedMobpatchReloader.deserializeAdvancedHumanoidCombatBehaviors(tag.getList("combat_behavior", 10)));
             provider.setAHWeaponMotions(MobPatchReloadListener.deserializeHumanoidWeaponMotions(tag.getList("humanoid_weapon_motions", 10)));
-            provider.setGuardMotions(AdvancedMobpatchReloader.deserializeGuardMotions(tag.getList("custom_guard_motion", 10)));
+            provider.setGuardMotions(AdvancedMobpatchReloader.deserializeHumanoidGuardMotions(tag.getList("custom_guard_motion", 10)));
             provider.setRegenStaminaStandbyTime(tag.getCompound("attributes").contains("stamina_regan_delay") ? tag.getCompound("attributes").getInt("stamina_regan_delay") : 30);
             provider.setHasStunReduction(!tag.getCompound("attributes").contains("has_stun_reduction") || tag.getCompound("attributes").getBoolean("has_stun_reduction"));
             provider.setReganShieldStandbyTime(tag.getCompound("attributes").contains("stun_shield_regan_delay") ? tag.getCompound("attributes").getInt("stun_shield_regan_delay") : 30);
@@ -110,19 +110,17 @@ public class AdvNpcPatchReloader  extends SimpleJsonResourceReloadListener {
         return provider;
     }
 
-    private static List<CommandEvent.StunEvent> deserializeStunCommandList(ListTag args) {
-        List<CommandEvent.StunEvent> list = Lists.newArrayList();
+    private static List<LivingEntityPatchEvent.StunEvent> deserializeStunCommandList(ListTag args) {
+        List<LivingEntityPatchEvent.StunEvent> list = Lists.newArrayList();
 
         for(int k = 0; k < args.size(); ++k) {
             CompoundTag command = args.getCompound(k);
             boolean execute_at_target = command.contains("execute_at_target") && command.getBoolean("execute_at_target");
-            CommandEvent.StunEvent event = CommandEvent.StunEvent.CreateStunCommandEvent(command.getString("command"), execute_at_target, StunType.valueOf(command.getString("stun_type").toUpperCase(Locale.ROOT)));
+            LivingEntityPatchEvent.StunEvent event = LivingEntityPatchEvent.StunEvent.CreateStunCommandEvent(command.getString("command"), execute_at_target, StunType.valueOf(command.getString("stun_type").toUpperCase(Locale.ROOT)));
             list.add(event);
         }
 
         return list;
     }
-
-
 }
 
