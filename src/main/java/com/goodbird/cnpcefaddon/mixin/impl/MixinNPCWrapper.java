@@ -16,6 +16,6 @@ public abstract class MixinNPCWrapper<T extends EntityNPCInterface> extends Enti
 
     @Unique
     public void setEFModel(String modelPath){
-        ((IDataDisplay)entity.display).setEFModel(new ResourceLocation(modelPath));
+        ((IDataDisplay)entity.display).setEFModel(ResourceLocation.parse(modelPath));
     }
 }

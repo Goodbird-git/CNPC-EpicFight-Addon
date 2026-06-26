@@ -20,12 +20,15 @@ import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraftforge.registries.ForgeRegistries;
 import noppes.npcs.CustomEntities;
+import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.api.client.model.Meshes;
+import yesman.epicfight.api.client.model.SkinnedMesh;
 import yesman.epicfight.api.data.reloader.MobPatchReloadListener;
 import yesman.epicfight.api.model.Armature;
 import yesman.epicfight.client.mesh.HumanoidMesh;
 import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.main.EpicFightMod;
+import yesman.epicfight.main.EpicFightSharedConstants;
 import yesman.epicfight.model.armature.HumanoidArmature;
 import yesman.epicfight.particle.HitParticleType;
 import yesman.epicfight.world.capabilities.entitypatch.Faction;
@@ -57,7 +60,7 @@ public class AdvNpcPatchReloader  extends SimpleJsonResourceReloadListener {
             filteredTag.putString("patchType", "ADVANCED");
             NpcPatchReloadListener.TAGMAP.put(entry.getKey(), filteredTag);
             EntityPatchProvider.putCustomEntityPatch(CustomEntities.entityCustomNpc, entity -> ()->NpcPatchReloadListener.branchPatchProvider.get(entity));
-            if (EpicFightMod.isPhysicalClient())
+            if (EpicFightSharedConstants.isPhysicalClient())
                 RenderStorage.registerRenderer(entry.getKey(), tag.contains("preset") ? tag.getString("preset") : tag.getString("renderer"), tag);
         }
     }
@@ -65,32 +68,28 @@ public class AdvNpcPatchReloader  extends SimpleJsonResourceReloadListener {
     public static AdvNpcPatchProvider deserializeMobPatchProvider(ResourceManager resourceManagerIn, CompoundTag tag, boolean clientSide) {
         AdvNpcPatchProvider provider = new AdvNpcPatchProvider();
         provider.setAttributeValues(AdvancedMobpatchReloader.deserializeAdvancedAttributes(tag.getCompound("attributes")));
-        ResourceLocation modelLocation = new ResourceLocation(tag.getString("model"));
-        ResourceLocation armatureLocation = new ResourceLocation(tag.getString("armature"));
-        if (EpicFightMod.isPhysicalClient()) {
-            Meshes.getOrCreateAnimatedMesh(resourceManagerIn,modelLocation, HumanoidMesh::new);
+        ResourceLocation modelLocation = ResourceLocation.parse(tag.getString("model"));
+        ResourceLocation armatureLocation = ResourceLocation.parse(tag.getString("armature"));
+        if (EpicFightSharedConstants.isPhysicalClient()) {
+            Meshes.getOrCreate(modelLocation, (jsonAssetLoader) -> jsonAssetLoader.loadSkinnedMesh(SkinnedMesh::new));
+            provider.setHasBossBar(tag.contains("boss_bar") && tag.getBoolean("boss_bar"));
+            provider.setName(tag.contains("boss_bar") && tag.contains("custom_name") ? tag.getString("custom_name") : null);
         }
-        Armature armature = Armatures.getOrCreateArmature(resourceManagerIn,armatureLocation, HumanoidArmature::new);
-        ((INpcPatchProvider)provider).setArmature(armature);
-        Armatures.registerEntityTypeArmature(CustomEntities.entityCustomNpc, patch -> {
-            if(patch instanceof INpcPatch) {
-                return ((INpcPatch) patch).getArmature().deepCopy();
-            }
-            return Armatures.getRegistry(patch.getOriginal().getType()).apply(patch).deepCopy();
-        });
-        provider.setHasBossBar(tag.contains("boss_bar") && tag.getBoolean("boss_bar"));
-        provider.setName(tag.contains("boss_bar") && tag.contains("custom_name") ? tag.getString("custom_name") : null);
+
+        AssetAccessor<Armature> armature = Armatures.getOrCreate(armatureLocation, HumanoidArmature::new);
+        ((INpcPatchProvider)provider).setArmature(armature.get());
+
         provider.setBossBar(tag.contains("boss_bar") && tag.contains("custom_texture") ? ResourceLocation.tryParse(tag.getString("custom_texture")) : null);
         provider.setDefaultAnimations(MobPatchReloadListener.deserializeDefaultAnimations(tag.getCompound("default_livingmotions")));
-        provider.setFaction(Faction.valueOf(tag.getString("faction").toUpperCase(Locale.ROOT)));
+        provider.setFaction(Faction.ENUM_MANAGER.getOrThrow(tag.getString("faction")));
         provider.setScale(tag.getCompound("attributes").contains("scale") ? (float)tag.getCompound("attributes").getDouble("scale") : 1.0F);
         provider.setMaxStunShield(tag.getCompound("attributes").contains("max_stun_shield") ? (float)tag.getCompound("attributes").getDouble("max_stun_shield") : 0.0F);
         if (tag.contains("swing_sound"))
-            provider.setSwingSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(tag.getString("swing_sound"))));
+            provider.setSwingSound(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse(tag.getString("swing_sound"))));
         if (tag.contains("hit_sound"))
-            provider.setHitSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(tag.getString("hit_sound"))));
+            provider.setHitSound(ForgeRegistries.SOUND_EVENTS.getValue(ResourceLocation.parse(tag.getString("hit_sound"))));
         if (tag.contains("hit_particle"))
-            provider.setHitParticle((HitParticleType)ForgeRegistries.PARTICLE_TYPES.getValue(new ResourceLocation(tag.getString("hit_particle"))));
+            provider.setHitParticle((HitParticleType)ForgeRegistries.PARTICLE_TYPES.getValue(ResourceLocation.parse(tag.getString("hit_particle"))));
         if (!clientSide) {
             provider.setStunAnimations(MobPatchReloadListener.deserializeStunAnimations(tag.getCompound("stun_animations")));
             provider.setChasingSpeed(tag.getCompound("attributes").getDouble("chasing_speed"));

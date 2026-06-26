@@ -8,8 +8,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.registries.ForgeRegistries;
 import noppes.npcs.CustomEntities;
-import yesman.epicfight.api.client.model.AnimatedMesh;
+import yesman.epicfight.api.asset.AssetAccessor;
 import yesman.epicfight.api.client.model.Meshes;
+import yesman.epicfight.api.client.model.SkinnedMesh;
 import yesman.epicfight.client.ClientEngine;
 import yesman.epicfight.client.events.engine.RenderEngine;
 import yesman.epicfight.client.mesh.HumanoidMesh;
@@ -34,14 +35,14 @@ public class RenderStorage {
             EntityRenderDispatcher erd = engine.minecraft.getEntityRenderDispatcher();
             EntityRendererProvider.Context context = new EntityRendererProvider.Context(erd, engine.minecraft.getItemRenderer(), engine.minecraft.getBlockRenderer(), erd.getItemInHandRenderer(), engine.minecraft.getResourceManager(), engine.minecraft.getEntityModels(), engine.minecraft.font);
             if (compound.getBoolean("isHumanoid")) {
-                HumanoidMesh mesh = Meshes.getOrCreateAnimatedMesh(engine.minecraft.getResourceManager(), new ResourceLocation(compound.getString("model")), HumanoidMesh::new);
-                renderersMap.put(resourceLocation, new PCustomHumanoidEntityRenderer(()->mesh, context, CustomEntities.entityCustomNpc));
+                AssetAccessor<HumanoidMesh> mesh = Meshes.getOrCreate(ResourceLocation.parse(compound.getString("model")), (jsonAssetLoader) -> jsonAssetLoader.loadSkinnedMesh(HumanoidMesh::new));
+                renderersMap.put(resourceLocation, new PCustomHumanoidEntityRenderer(mesh, context, CustomEntities.entityCustomNpc));
             } else {
-                AnimatedMesh mesh = Meshes.getOrCreateAnimatedMesh(engine.minecraft.getResourceManager(), new ResourceLocation(compound.getString("model")), AnimatedMesh::new);
-                renderersMap.put(resourceLocation, new PCustomEntityRenderer(()->mesh, context));
+                AssetAccessor<SkinnedMesh> mesh = Meshes.getOrCreate(ResourceLocation.parse(compound.getString("model")), (jsonAssetLoader) -> jsonAssetLoader.loadSkinnedMesh(SkinnedMesh::new));
+                renderersMap.put(resourceLocation, new PCustomEntityRenderer(mesh, context));
             }
         }  else {
-            EntityType<?> presetEntityType = ForgeRegistries.ENTITY_TYPES.getValue(new ResourceLocation(renderer));
+            EntityType<?> presetEntityType = ForgeRegistries.ENTITY_TYPES.getValue(ResourceLocation.parse(renderer));
             if (renderEngine.getEntityRendererProvider().containsKey(presetEntityType)) {
                 renderersMap.put(resourceLocation, renderEngine.getEntityRendererProvider().get(presetEntityType).apply(presetEntityType));
             } else {

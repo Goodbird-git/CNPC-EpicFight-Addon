@@ -10,6 +10,7 @@ import yesman.epicfight.api.model.Armature;
 import yesman.epicfight.api.utils.math.OpenMatrix4f;
 import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.main.EpicFightMod;
+import yesman.epicfight.main.EpicFightSharedConstants;
 import yesman.epicfight.world.capabilities.entitypatch.CustomMobPatch;
 import yesman.epicfight.world.capabilities.entitypatch.Faction;
 
@@ -24,8 +25,9 @@ public class NpcPatch<T extends PathfinderMob> extends CustomMobPatch<T> impleme
     public void onConstructed(T entityIn) {
         this.original = entityIn;
         this.armature = provider.armature.deepCopy();
-        this.animator = EpicFightMod.getAnimator(this);
-        this.animator.init();
+        this.animator = EpicFightSharedConstants.getAnimator(this);
+        this.initAnimator(animator);
+        animator.postInit();
     }
 
     public OpenMatrix4f getModelMatrix(float partialTicks) {

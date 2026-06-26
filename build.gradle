@@ -148,11 +148,11 @@ dependencies {
     // Specify the version of Minecraft to use, If this is any group other then 'net.minecraft' it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency. And it's patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft 'net.minecraftforge:forge:1.20.1-47.2.20'
+    minecraft 'net.minecraftforge:forge:1.20.1-47.4.0'
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-    implementation fg.deobf('lib:CustomNPCs:1.20.1-GBPort-Unofficial-20240709')
-    implementation fg.deobf('lib:epicfight-forge:20.9.7-1.20.1')
-    implementation fg.deobf('lib:indestructible:20.9.7')
+    implementation fg.deobf('lib:CustomNPCs:1.20.1-GBPort-Unofficial-1.20.1.20260626')
+    implementation fg.deobf('lib:epic-fight:20.14.17-mc1.20.1-forge')
+    implementation fg.deobf('lib:indestructible:20.12.0')
 //    implementation fg.deobf('lib:indestructible:20.6.7')
     //compile group: 'com.h2database', name: 'h2', version: '1.4.200'
     //extraLibs group: 'com.h2database', name: 'h2', version: '1.4.200'

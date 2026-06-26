@@ -22,7 +22,7 @@ public class NetworkHandler {
 
     public static void register() {
         CHANNEL = NetworkRegistry.ChannelBuilder
-                .named(new ResourceLocation(CNPCEpicFightAddon.MODID, "packets"))
+                .named(ResourceLocation.fromNamespaceAndPath(CNPCEpicFightAddon.MODID, "packets"))
                 .clientAcceptedVersions(PROTOCOL::equals)
                 .serverAcceptedVersions(PROTOCOL::equals)
                 .networkProtocolVersion(() -> PROTOCOL)

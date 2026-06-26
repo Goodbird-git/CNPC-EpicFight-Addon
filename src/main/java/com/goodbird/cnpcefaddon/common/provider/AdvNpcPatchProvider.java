@@ -9,6 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import yesman.epicfight.api.animation.AnimationManager;
 import yesman.epicfight.api.animation.LivingMotion;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.model.Armature;
@@ -33,7 +34,7 @@ public class AdvNpcPatchProvider extends AdvancedMobpatchReloader.AdvancedCustom
         this.AHCombatBehaviors = val;
     }
 
-    public void setAHWeaponMotions(Map<WeaponCategory, Map<Style, Set<Pair<LivingMotion, StaticAnimation>>>> val) {
+    public void setAHWeaponMotions(Map<WeaponCategory, Map<Style, Set<Pair<LivingMotion, AnimationManager.AnimationAccessor<? extends StaticAnimation>>>>> val) {
         this.AHWeaponMotions = val;
     }
 
@@ -69,11 +70,11 @@ public class AdvNpcPatchProvider extends AdvancedMobpatchReloader.AdvancedCustom
         this.guardRadius = val;
     }
 
-    public void setDefaultAnimations(List<Pair<LivingMotion, StaticAnimation>> val) {
+    public void setDefaultAnimations(List<Pair<LivingMotion, AnimationManager.AnimationAccessor<? extends StaticAnimation>>> val) {
         this.defaultAnimations = val;
     }
 
-    public void setStunAnimations(Map<StunType, StaticAnimation> val) {
+    public void setStunAnimations(Map<StunType, AnimationManager.AnimationAccessor<? extends StaticAnimation>> val) {
         this.stunAnimations = val;
     }
 

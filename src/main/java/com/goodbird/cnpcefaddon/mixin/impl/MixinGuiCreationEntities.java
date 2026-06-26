@@ -37,7 +37,7 @@ public class MixinGuiCreationEntities extends GuiCreationScreenInterface {
         addLabel(new GuiLabel(312,"EpicFight Config:", this.guiLeft + 124, this.guiTop - 21,0xffffff));
         this.addButton(new GuiButtonNop(this, 302, this.guiLeft + 230, this.guiTop - 27, 150, 20, curName, (b) -> {
             setSubGui(new GuiStringSelection(this, "Selecting epicfight config:", list, name -> {
-                ((IDataDisplay)npc.display).setEFModel(new ResourceLocation(name), false);
+                ((IDataDisplay)npc.display).setEFModel(ResourceLocation.parse(name), false);
                 getButton(302).setDisplayText(name);
             }));
         }));

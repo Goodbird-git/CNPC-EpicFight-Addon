@@ -8,6 +8,7 @@ import noppes.npcs.entity.EntityNPCInterface;
 import yesman.epicfight.api.utils.math.OpenMatrix4f;
 import yesman.epicfight.gameasset.Armatures;
 import yesman.epicfight.main.EpicFightMod;
+import yesman.epicfight.main.EpicFightSharedConstants;
 import yesman.epicfight.model.armature.HumanoidArmature;
 import yesman.epicfight.world.capabilities.entitypatch.CustomHumanoidMobPatch;
 import yesman.epicfight.world.capabilities.entitypatch.Faction;
@@ -22,8 +23,9 @@ public class NpcHumanoidPatch<T extends PathfinderMob> extends CustomHumanoidMob
     public void onConstructed(T entityIn) {
         this.original = entityIn;
         this.armature = provider.armature.deepCopy();
-        this.animator = EpicFightMod.getAnimator(this);
-        this.animator.init();
+        this.animator = EpicFightSharedConstants.getAnimator(this);
+        this.initAnimator(animator);
+        animator.postInit();
     }
 
     public OpenMatrix4f getModelMatrix(float partialTicks) {

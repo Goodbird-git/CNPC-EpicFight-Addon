@@ -39,7 +39,7 @@ public class MixinDataDisplay implements IDataDisplay {
     @Inject(method = "readToNBT", at = @At("HEAD"), remap = false)
     public void readFromNBT(CompoundTag nbttagcompound, CallbackInfo ci){
         if(nbttagcompound.contains("efModel")){
-            cNPC_EpicFight_Addon$efModelResLoc = new ResourceLocation(nbttagcompound.getString("efModel"));
+            cNPC_EpicFight_Addon$efModelResLoc = ResourceLocation.parse(nbttagcompound.getString("efModel"));
             cNPC_EpicFight_Addon$updateModelCap();
             if(npc.isKilled()) {
                 LivingEntityPatch<?> patch = EpicFightCapabilities.getEntityPatch(npc, LivingEntityPatch.class);

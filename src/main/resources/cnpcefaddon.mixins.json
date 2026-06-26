@@ -9,7 +9,6 @@
     "MixinAttributeMap",
     "MixinCapabilityDispatcher2",
     "MixinCapabilityProvider",
-    "MixinClientConfig",
     "MixinDataDisplay",
     "MixinEntityLivingWrapper",
     "MixinEntityNpcInterface",
@@ -20,7 +19,6 @@
     "MixinGuiCreationEntities",
     "MixinLayerHeadwear",
     "MixinRenderEngine",
-    "MixinRenderEngineEvents",
     "MixinTargetIndicator"
   ],
   "minVersion": "0.8"

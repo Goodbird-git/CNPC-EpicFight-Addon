@@ -6,6 +6,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
+import yesman.epicfight.api.animation.AnimationManager;
 import yesman.epicfight.api.animation.LivingMotion;
 import yesman.epicfight.api.animation.types.StaticAnimation;
 import yesman.epicfight.api.data.reloader.MobPatchReloadListener;
@@ -23,9 +24,9 @@ public interface ICustomMobPatchProvider {
     @Accessor(remap = false)
     void setCombatBehaviorsBuilder(CombatBehaviors.Builder<?> builder);
     @Accessor(remap = false)
-    void setDefaultAnimations(List<Pair<LivingMotion, StaticAnimation>> list);
+    void setDefaultAnimations(List<Pair<LivingMotion, AnimationManager.AnimationAccessor<? extends StaticAnimation>>> list);
     @Accessor(remap = false)
-    void setStunAnimations(Map<StunType, StaticAnimation> map);
+    void setStunAnimations(Map<StunType, AnimationManager.AnimationAccessor<? extends StaticAnimation>> map);
     @Accessor(remap = false)
     void setAttributeValues(Object2DoubleMap<Attribute> map);
     @Accessor(remap = false)
